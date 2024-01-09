@@ -1,18 +1,29 @@
-import { Route, Routes } from "react-router-dom"
-import Home from "../pages/home"
-import Admin from "../pages/admin"
-import { Fixture } from "../pages/fixture"
-import PromocionalForm from "../pages/promociones"
+import { Route, Routes } from "react-router-dom";
+import Admin from "../pages/admin";
+import { Fixture } from "../pages/fixture";
+import Home from "../pages/home";
+import Login from "../pages/login";
+import Promocion from "../pages/promocion";
+import { RegisterPromocion } from "../pages/register-promocion";
 
-
-const FixtureRoutes = ()=>{
+const FixtureRoutes = () => {
   return (
-  <Routes>
-    <Route path="/fixture" element={<Fixture/> } />
-    <Route path='/' element={<Home/>} />
-    <Route path='/admin/fixture' element={<Admin/>} /> 
-    <Route path="/create" element={<PromocionalForm/>} />
-  </Routes>
-  )
-}
-export default FixtureRoutes
+    <>
+      <Routes>
+        <Route>
+          <Route path="/admin" element={<Admin />}></Route>
+          <Route path="/" element={<Home />} />
+          <Route path="/login" element={<Login />} />
+          <Route path="/home" />
+          <Route path="/admin/registrar-fixture" element={<Fixture />} />
+          <Route path="/registrar-promociones" element={<Promocion />} />
+          <Route
+            path="/registrar-promociones/create/:id"
+            element={<RegisterPromocion />}
+          />
+        </Route>
+      </Routes>
+    </>
+  );
+};
+export default FixtureRoutes;

@@ -5,9 +5,8 @@ import { GrupoPromocion } from '../types/fixture.api.type.ts'
 import { obtenerGrupo } from '../services/api.service.ts'
 
 type grupo = {
-
   grupos: GrupoPromocion[];
-  selectGrupo: number
+  selectGrupo: number;
   obtenerGrupo: () => Promise<void>
   selectedGrupo: (id: number) => void
 }

@@ -1,4 +1,4 @@
-export const ListFixture= ()=>{
+export const ListFixture= ({})=>{
   
   
   return (
