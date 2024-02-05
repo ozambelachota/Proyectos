@@ -16,7 +16,7 @@ const NavbarAdmin = () => {
   const navigate = useNavigate();
   const user = useUserStore((state) => state.username);
   const setUser = useUserStore((state) => state.setUserData);
-  const handleMenuClick = (event) => {
+  const handleMenuClick = (event: any) => {
     setAnchorEl(event.currentTarget);
   };
 
@@ -26,8 +26,13 @@ const NavbarAdmin = () => {
 
   const handleLogout = async () => {
     const error = await signOut();
-    
-    if (!error){ navigate("/", { replace: true }); setUser("", "");}
+
+    if (!error) {
+      navigate("/", { replace: true });
+      setUser("", "", "", "");
+    }
+
+    setAnchorEl(null);
   };
 
   return (
@@ -43,9 +48,6 @@ const NavbarAdmin = () => {
             to="/admin/registrar-fixture"
           >
             Registrar Fixture
-          </Button>
-          <Button color="inherit" component={Link} to="/registrar-campos">
-            Registrar Campos
           </Button>
           <Button color="inherit" component={Link} to="/registrar-promociones">
             Registrar Promociones

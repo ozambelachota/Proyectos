@@ -1,19 +1,15 @@
-import { Button, Container, Link, TextField, Typography } from "@mui/material";
+import { Button, Container, TextField, Typography } from "@mui/material";
 import React from "react";
 import { useForm } from "react-hook-form";
 import { clientApi } from "../api/client.api";
 import LoginWithGoogle from "./login-g";
-
-interface LoginFormProps {
-  onSignupClick: () => void;
-}
 
 interface FormData {
   email: string;
   password: string;
 }
 
-const LoginForm: React.FC<LoginFormProps> = ({ onSignupClick }) => {
+const LoginForm: React.FC = () => {
   const { register, handleSubmit } = useForm<FormData>();
 
   const onSubmit = async (data: FormData) => {
@@ -80,13 +76,6 @@ const LoginForm: React.FC<LoginFormProps> = ({ onSignupClick }) => {
           Iniciar sesión
         </Button>
         <LoginWithGoogle></LoginWithGoogle>
-
-        <Typography variant="body2" style={{ marginTop: "16px" }}>
-          ¿No tienes una cuenta?{" "}
-          <Link href="#" onClick={onSignupClick} variant="body2">
-            Registrarse
-          </Link>
-        </Typography>
       </form>
     </Container>
   );

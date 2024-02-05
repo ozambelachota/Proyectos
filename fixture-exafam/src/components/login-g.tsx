@@ -2,20 +2,18 @@ import { Button } from "@supabase/ui";
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { clientApi } from "../api/client.api";
+import { userAdmin } from "../services/api.service";
 import { useUserStore } from "../store/login.store";
 
 const LoginWithGoogle = () => {
   const setUser = useUserStore((state) => state.setUserData);
   const navigate = useNavigate();
-
-  const user  = useUserStore((state) => state.username)
+  const setRol = useUserStore((state) => state.setRol);
   const handleLogin = async () => {
     try {
       const { error } = await clientApi.auth.signInWithOAuth({
         provider: "google",
-        options: {
-          redirectTo: "http://localhost:5173/admin",
-        },
+        options: { redirectTo: "http://localhost:5173/admin/home" },
       });
 
       if (error) {
@@ -31,25 +29,28 @@ const LoginWithGoogle = () => {
   useEffect(() => {
     const authListener = clientApi.auth.onAuthStateChange(
       async (event, session) => {
-        console.log(event);
-        if ( session) {
+        if (session) {
           setUser(
             session.user.user_metadata?.full_name,
-            session.user.user_metadata?.picture
+            session.user.user_metadata?.picture,
+            event,
+            session.user.id
           );
-          console.log(session)
-          navigate("/admin", { replace: true });
+          const rol = await userAdmin(session.user.id);
+          setRol(rol);
+          console.log(rol);
+          console.log(session.user);
+          navigate("/admin/home", { replace: true });
         } else {
           navigate("/login", { replace: true });
         }
       }
     );
 
-    // Limpieza de la suscripción al desmontar el componente
     return () => {
       authListener.data?.subscription;
     };
-  }, []); // Array de dependencias vacío para que se ejecute solo una vez al montar el componente
+  }, []);
 
   return (
     <>

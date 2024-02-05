@@ -1,6 +1,5 @@
-import { useEffect } from "react";
-import { fixtureStore } from "../store/fixture.store";
 import {
+  Button,
   Paper,
   Table,
   TableBody,
@@ -10,7 +9,9 @@ import {
   TableRow,
   Typography,
 } from "@mui/material";
+import { useEffect } from "react";
 import { Link } from "react-router-dom";
+import { fixtureStore } from "../store/fixture.store";
 
 const ListPromociones = () => {
   const {
@@ -74,9 +75,14 @@ const ListPromociones = () => {
                     {grupoFiltter.map((grupo) => grupo.nombre_grupo)}
                   </TableCell>
                   <TableCell align="right">
-                    <Link to={`create/${promocion.id}`}>
+                    <Button
+                      variant="contained"
+                      sx={{background:"#ff00dd"}}
+                      component={Link}
+                      to={`create/${promocion.id}`}
+                    >
                       Registrar promociones
-                    </Link>
+                    </Button>
                   </TableCell>
                 </TableRow>
               );

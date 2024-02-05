@@ -87,7 +87,8 @@ export const getPartidosFechaNoMayor = async () => {
   try {
     const { data, error } = await clientApi
       .from("fixture_exafam")
-      .select("*").order('fecha_partido',{ascending:true})
+      .select("*")
+      .order("fecha_partido", { ascending: true });
     console.log(data);
     if (error) {
       throw error;
@@ -98,5 +99,22 @@ export const getPartidosFechaNoMayor = async () => {
     console.error("Error al obtener partidos:", error);
     // Manejar el error según tus necesidades
     return null;
+  }
+};
+
+export const userAdmin = async (
+  userId: string
+): Promise<string | undefined> => {
+  try {
+    const { data, error } = await clientApi
+      .from("usuario")
+      .select("rol")
+      .eq("user_id", userId);
+
+    console.log(data);
+    if (error) throw new Error(error.message);
+  } catch (error) {
+    console.error(error);
+    return undefined;
   }
 };

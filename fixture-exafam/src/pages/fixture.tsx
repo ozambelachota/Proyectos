@@ -174,6 +174,7 @@ export const Fixture = () => {
               value={selectGrupo}
               onChange={handleChangeSelectGrupo}
               label="Grupo"
+              size="small"
             >
               <MenuItem value={0}>Seleccionar Grupo</MenuItem>
               {grupos.map(({ id, nombre_grupo }) => (
@@ -191,6 +192,7 @@ export const Fixture = () => {
               value={campoSelect}
               onChange={handleChangeSelectCampo}
               label="Campo"
+              size="small"
             >
               <MenuItem value={0}>Seleccionar Campo</MenuItem>
               {campos.map(({ id_campo, nombre_campo }) => (
@@ -219,6 +221,7 @@ export const Fixture = () => {
           <TextField
             label="Número de Fechas Jugadas"
             type="number"
+            size="small"
             value={numeroFechaJugados}
             onChange={(e) =>
               setNumeroFechaJugados(parseInt(e.target.value, 10))

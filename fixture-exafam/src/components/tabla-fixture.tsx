@@ -1,5 +1,5 @@
 import {
-  Box,
+  Grid,
   Paper,
   Table,
   TableBody,
@@ -9,6 +9,7 @@ import {
   TableRow,
   Typography,
 } from "@mui/material";
+import { format, parseISO } from "date-fns";
 import React, { useEffect } from "react";
 import { fixtureStore } from "../store/fixture.store";
 import { Fixture } from "../types/fixture.api.type";
@@ -33,46 +34,70 @@ const TablaFixture: React.FC = () => {
       return result;
     }, {} as { [key: string]: any[] });
   };
+
+  const obtenerProximosPartidos = (grupoPartidos: Fixture[]) => {
+    return grupoPartidos
+      .filter((partido) => new Date(partido.fecha_partido) > new Date())
+      .sort(
+        (a, b) =>
+          new Date(a.fecha_partido).getTime() -
+          new Date(b.fecha_partido).getTime()
+      )
+      .slice(0, 3);
+  };
+
   const partidosAgrupados = groupBy(partidos, "grupo_id");
+  const formatDate = (date: Date | string | null) => {
+    if (!date) {
+      return "";
+    }
+
+    try {
+      const parsedDate = typeof date === "string" ? parseISO(date) : date;
+      return format(parsedDate, "dd/MM/yyyy HH:mm");
+    } catch (error) {
+      console.error("Error parsing or formatting date:", error);
+      return "";
+    }
+  };
 
   return (
     <div>
-      <Box mb={4}>
-        <Typography variant="h5" mb={2}></Typography>
+      <Grid container spacing={2}>
         {Object.keys(partidosAgrupados).map((grupoId) => (
-          <div key={grupoId}>
+          <Grid item xs={6} key={grupoId}>
             <Typography variant="h6" mb={2}>{`Grupo ${grupoId}`}</Typography>
             <TableContainer component={Paper}>
               <Table>
                 <TableHead>
                   <TableRow>
-                    <TableCell>Promocion</TableCell>
+                    <TableCell>Promoción</TableCell>
                     <TableCell>VS</TableCell>
-                    <TableCell>Promocion</TableCell>
+                    <TableCell>Promoción</TableCell>
                     <TableCell>Fecha</TableCell>
                     <TableCell>Campo</TableCell>
-                    <TableCell>Ronda</TableCell>
                   </TableRow>
                 </TableHead>
                 <TableBody>
-                  {partidosAgrupados[grupoId].map((partido: Fixture) => (
-                    <TableRow key={partido.id}>
-                      <TableCell>{partido.promocion}</TableCell>
-                      <TableCell>VS</TableCell>
-                      <TableCell>{partido.vs_promocion}</TableCell>
-                      <TableCell>
-                        {partido.fecha_partido.toLocaleString()}
-                      </TableCell>
-                      <TableCell>{partido.campo_id}</TableCell>
-                      <TableCell>{partido.n_fecha_jugada}</TableCell>
-                    </TableRow>
-                  ))}
+                  {obtenerProximosPartidos(partidosAgrupados[grupoId]).map(
+                    (partido: Fixture) => (
+                      <TableRow key={partido.id}>
+                        <TableCell>{partido.promocion}</TableCell>
+                        <TableCell>VS</TableCell>
+                        <TableCell>{partido.vs_promocion}</TableCell>
+                        <TableCell>
+                          {formatDate(partido.fecha_partido)}
+                        </TableCell>
+                        <TableCell>{partido.campo_id}</TableCell>
+                      </TableRow>
+                    )
+                  )}
                 </TableBody>
               </Table>
             </TableContainer>
-          </div>
+          </Grid>
         ))}
-      </Box>
+      </Grid>
     </div>
   );
 };
